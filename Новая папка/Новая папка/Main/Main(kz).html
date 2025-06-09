@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangyshNet</title>
+    <link rel="icon" href="/Pictures/WebLogo.png">
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+</head>
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll(
+                '.hero-section, .problem-solution-section, .map-coverage-section, .footer'
+            ).forEach(el => {
+                el.classList.remove('visible');
+                el.classList.add('scroll-animate');
+            });
+
+            const elements = document.querySelectorAll('.scroll-animate');
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+    <style>
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+        }
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: none;
+        }
+    </style>
+    <header style="position: sticky; top: 0; background-color: white; z-index: 1000;">
+        <div class="header-left">
+            <a href="#" class="logo">MangyshNet</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/Main/Main(kz).html">Басты бет</a></li>
+            <li><a href="/Main/About us(kz).html">Жоба туралы</a></li>
+            <li><a href="/Main/tarrifs(kz).html">Қызметтер</a></li>
+            <li><a href="#" onclick="document.querySelector('.map-display').scrollIntoView({ behavior: 'smooth' }); return false;">Қамту картасы</a></li>
+            <li><a href="/Main/Helper(kz).html">Қолдау</a></li>
+            <li><a href="#" onclick="document.querySelector('.footer').scrollIntoView({ behavior: 'smooth' }); return false;">Байланыс</a></li>
+        </ul>
+        <div class="header-right">
+            <nav class="language-selector">
+                <ul>
+                    <li style="display: inline;"><a href="/Main/main.html" style="padding: 6px 14px; border-radius: 4px; background: #e0e0e0; color: #354259; margin-right: 8px; text-decoration: none; font-weight: bold; transition: background 0.2s;">RU</a></li>
+                    <li style="display: inline;"><a href="/Main/Main(kz).html" style="padding: 6px 14px; border-radius: 4px; background: #354259; color: #fff; margin-right: 8px; text-decoration: none; font-weight: bold; transition: background 0.2s;">KZ</a></li>
+                    <li style="display: inline;"><a href="/Main/Main(eng).html" style="padding: 6px 14px; border-radius: 4px; background: #e0e0e0; color: #354259; text-decoration: none; font-weight: bold; transition: background 0.2s;">EN</a></li>
+                </ul>
+            </nav>
+            <link href="/Main/tarrifs(kz).html" rel="stylesheet">
+            <a href="/Main/tarrifs(kz).html" class="connect-button">Қосылу</a>
+        </div>
+        <div id="theme-toggle" style="margin-left: 20px; cursor: pointer; font-size: 24px;">
+            <span id="theme-icon">☀</span>
+        </div>
+    </header>
+    <script>
+        function animateThemeChange(isDark) {
+            document.body.style.transition = 'background-color 0.5s, color 0.5s';
+            setTimeout(() => {
+                document.body.style.transition = '';
+            }, 600);
+        }
+
+        document.getElementById('theme-toggle').onclick = function() {
+            const isDark = !document.body.classList.contains('dark-theme');
+            document.body.classList.toggle('dark-theme');
+            animateThemeChange(isDark);
+            const themeIcon = document.getElementById('theme-icon');
+            if(document.body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '☾';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '☀';
+                localStorage.setItem('theme', 'light');
+            }
+        };
+
+        (function() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+            .dark-theme .main-title {
+                color: #2c30d3 !important;
+                transition: color 0.5s;
+            }
+            .dark-theme .description {
+                color: #d3d3d3 !important;
+                transition: color 0.5s;
+            }
+            .dark-theme .feature-icon {
+                background-color: #23262f !important;
+                color: #e0e0e0 !important;
+                transition: background-color 0.5s, color 0.5s;
+            }
+            body.dark-theme {
+                background-color: #181a20 !important;
+                color: #e0e0e0 !important;
+                transition: background-color 0.5s, color 0.5s;
+            }
+            .dark-theme header {
+                background-color: #23262f !important;
+                color: #e0e0e0 !important;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+                transition: background-color 0.5s, color 0.5s;
+            }
+            .dark-theme .logo,
+            .dark-theme .nav-links a,
+            .dark-theme .language-selector,
+            .dark-theme .connect-button {
+                color: #e0e0e0 !important;
+                transition: color 0.5s;
+            }
+            .dark-theme .connect-button,
+            .dark-theme .btn-primary,
+            .dark-theme .footer-button {
+                background-color: #353b48 !important;
+                color: #fff !important;
+                transition: background-color 0.5s, color 0.5s;
+            }
+            .dark-theme .btn-secondary,
+            .dark-theme .filter,
+            .dark-theme .tab {
+                background-color: #23262f !important;
+                color: #e0e0e0 !important;
+                border-color: #353b48 !important;
+                transition: background-color 0.5s, color 0.5s, border-color 0.5s;
+            }
+            .dark-theme .btn-secondary,
+            .dark-theme .filter.active,
+            .dark-theme .tab.active {
+                background-color: #353b48 !important;
+                color: #fff !important;
+            }
+            .dark-theme .card {
+                background-color: #2b2f3d !important;
+                color: #e0e0e0 !important;
+                transition: background-color 0.5s, color 0.5s;
+            }
+            .dark-theme .card-icon.red {
+                background-color: #3a2323 !important;
+                color: #f44336 !important;
+            }
+            .dark-theme .card-icon.blue {
+                background-color: #343c54 !important;
+                color: #4a90e2 !important;
+            }
+            .dark-theme .card,
+            .dark-theme .map-legend,
+            .dark-theme .map-legend-right,
+            .dark-theme .popup,
+            .dark-theme .footer-subscribe {
+                background-color: #23262f !important;
+                color: #e0e0e0 !important;
+                border-color: #353b48 !important;
+            }
+            .dark-theme .section-title,
+            .dark-theme .section-description,
+            .dark-theme .card-title,
+            .dark-theme .card-description,
+            .dark-theme .feature-title,
+            .dark-theme .legend-title,
+            .dark-theme .legend-item {
+                color: #e0e0e0 !important;
+            }
+            .dark-theme .close-button {
+                color: #e0e0e0 !important;
+            }
+            .dark-theme .search-input,
+            .dark-theme .popup-input,
+            .dark-theme .footer-subscribe-form input {
+                background-color: #23262f !important;
+                color: #e0e0e0 !important;
+                border: 1px solid #353b48 !important;
+            }
+            .dark-theme .map-display {
+                background-color: #23262f !important;
+                color: #e0e0e0 !important;
+            }
+            .dark-theme .footer {
+                background-color: #050e22!important;
+                color: #e0e0e0 !important;
+            }
+            .dark-theme .footer-links a {
+                color: #b0b0b0 !important;
+            }
+            .dark-theme .footer-bottom {
+                border-top: 1px solid rgba(255,255,255,0.1) !important;
+                color: #b0b0b0 !important;
+            }
+            .dark-theme #theme-toggle {
+                background: none !important;
+                color: #fff !important;
+                border: none !important;
+            }
+            .dark-theme .map-filters,
+            .dark-theme .search-container {
+                background-color: #23262f !important;
+                border-color: #353b48 !important;
+            }
+            .dark-theme .legend-color {
+                border: 1px solid #353b48 !important;
+            }
+            .dark-theme .problem-solution-tabs {
+                background-color: #23262f !important;
+                border-color: #353b48 !important;
+            }
+            .dark-theme .modal-content {
+                background-color: #23262f !important;
+                color: #fff !important;
+                border: 1px solid #353b48 !important;
+                text-shadow: 1px 1px 2px #000;
+            }
+            .dark-theme .close-button {
+                color: #fff !important;
+            }
+            .dark-theme .close-btn {
+                color: #fff !important;
+            }
+            .dark-theme .modal-content table,
+            .dark-theme .modal-content td,
+            .dark-theme .modal-content th {
+                color: #fff !important;
+                text-shadow: 1px 1px 2px #000;
+            }
+
+            `;
+            document.head.appendChild(style);
+
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('theme-icon').textContent = '☾';
+            }
+        })();
+
+        document.querySelectorAll('.connect-button, .btn-primary').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'tariffs.html';
+            });
+        });
+    </script>
+    <!-- Hero Section -->
+    <section class="hero-section scroll-animate" style="justify-content: center;">
+    <div class="hero-content all-in-one" style="margin: 0 auto;">
+        <div class="tag">Жақын интернет</div>
+        <h1 class="main-title">MangyshNet Маңғыстау облысына арналған цифрлық көпір</h1>
+        <p class="description">Маңғыстау облысының ең шалғай ауылдарына дейін тұрақты байланыс ұсынатын ауқымды гибридті интернет инфрақұрылымы.</p>
+        
+        <div class="buttons">
+            <button class="btn-primary" onclick="window.location.href='/Main/tariffs(kz).html'"><span>📶</span> Қосылу</button>
+            <button class="btn-secondary"><span>▶</span> Видеоны көру</button>
+        </div>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <span>🛰️</span>
+                </div>
+                <div class="feature-title">Спутниктік байланыс</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <span>📱</span>
+                </div>
+                <div class="feature-title">Оптикалық талшық</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <span>📡</span>
+                </div>
+                <div class="feature-title">Mesh желілері</div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+    <!-- Проблемы и Решение-->
+    <section class="problem-solution-section">
+        <h2 class="section-title">Мәселе және шешім</h2>
+        <p class="section-description">Біз Маңғыстау облысының барлық бұрыштарын біріктіретін цифрлық көпір құрамыз</p>
+        
+        <div class="problem-solution-tabs">
+            <button class="tab active" onclick="showTab('problem')">Мәселе</button>
+            <button class="tab" onclick="showTab('solution')">Шешім</button>
+        </div>
+        
+        <div id="problem" class="cards-container">
+            <div class="card">
+                <div class="card-icon red">
+                    <span>❌</span>
+                </div>
+                <h3 class="card-title">Тұрақсыз байланыс</h3>
+                <p class="card-description">Көптеген ауылдар мен шағын қалаларда тұрақты интернетке қолжетімділік мәселесі бар</p>
+            </div>
+            <div class="card">
+                <div class="card-icon red">
+                    <span>🏫</span>
+                </div>
+                <h3 class="card-title">Білімге шектеулі қолжетімділік</h3>
+                <p class="card-description">Қашықтан оқуға және білім ресурстарына қолжетімділіктің болмауы</p>
+            </div>
+            <div class="card">
+                <div class="card-icon red">
+                    <span>📄</span>
+                </div>
+                <h3 class="card-title">Мемлекеттік қызметтерге қиындықтар</h3>
+                <p class="card-description">Цифрлық мемлекеттік қызметтерге қолжетімділіктің қиындығы</p>
+            </div>
+            <div class="card">
+                <div class="card-icon red">
+                    <span>💼</span>
+                </div>
+                <h3 class="card-title">Бизнес үшін шектеулер</h3>
+                <p class="card-description">Электрондық коммерция мен заманауи бизнес-модельдерді дамыту мүмкін еместігі</p>
+            </div>
+        </div>
+        
+        <div id="solution" class="cards-container" style="display: none;">
+            <div class="card">
+                <div class="card-icon blue">
+                    <span>🛰️</span>
+                </div>
+                <h3 class="card-title">Спутниктік станциялар</h3>
+                <p class="card-description">Starlink, OneWeb және KazSat пайдалану арқылы шалғай аудандарда байланыс қамтамасыз ету</p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">
+                    <span>📱</span>
+                </div>
+                <h3 class="card-title">Талшықты-оптикалық магистральдар</h3>
+                <p class="card-description">Қалалар мен қала маңында талшықты-оптикалық және LTE/5G ретрансляторларын орнату</p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">
+                    <span>📡</span>
+                </div>
+                <h3 class="card-title">Mesh-желілер мен Wi-Fi хабтар</h3>
+                <p class="card-description">Ауылдарда жергілікті mesh-желілер мен Wi-Fi кіру нүктелерін құру</p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">
+                    <span>⚙️</span>
+                </div>
+                <h3 class="card-title">Басқару платформасы</h3>
+                <p class="card-description">Қосылуларды, аналитиканы және техникалық қолдауды орталықтандырылған басқару жүйесі</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Карта -->
+    <section class="map-coverage-section">
+        <h2 class="section-title">Қамту картасы</h2>
+        <p class="section-description">MangyshNet-тің Маңғыстау облысындағы ағымдағы және жоспарланған қамтуының интерактивті картасы</p>
+        </div>
+        
+       <div class="map-display" style="border: 2px solid #979797; border-radius: 8px; overflow: hidden; position: relative;">
+            <div id="map" style="height: 100%; width: 100%;"></div>
+</div>
+<script src="script.js"></script>
+        
+        <button class="check-button" onclick="showPopup()">Мекенжай бойынша қолжетімділікті тексеру</button>
+                <script>
+        // Highlight empty fields in red if not filled, show message and check for "Ақтау"
+        document.addEventListener('DOMContentLoaded', function() {
+            const popupButton = document.querySelector('.popup-button');
+            // Create or select the warning message element
+            let warning = document.createElement('div');
+            warning.textContent = 'Деректерді енгізуіңіз қажет!';
+            warning.style.color = 'red';
+            warning.style.fontSize = '14px';
+            warning.style.margin = '0';
+            warning.style.display = 'none';
+            warning.className = 'popup-warning';
+            warning.style.alignItems = 'center';
+            warning.style.height = '38px'; // Match input/button height
+        
+            // Create or select the status message element
+            let statusMsg = document.createElement('div');
+            statusMsg.className = 'popup-status';
+            statusMsg.style.color = '#FFC107';
+            statusMsg.style.fontSize = '15px';
+            statusMsg.style.margin = '0 0 0 10px';
+            statusMsg.style.display = 'none';
+            statusMsg.style.alignItems = 'center';
+            statusMsg.style.height = '38px';
+        
+            // Insert warning and status just after the button, inside a flex row
+            const popupForm = document.querySelector('.popup-form');
+            const popupBtn = document.querySelector('.popup-button');
+            if (popupForm && popupBtn && !document.querySelector('.popup-warning')) {
+                // Wrap button, warning, and status in a flex row
+                let row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.alignItems = 'center';
+                row.style.gap = '10px';
+                popupBtn.parentNode.insertBefore(row, popupBtn);
+                row.appendChild(popupBtn);
+                row.appendChild(warning);
+                row.appendChild(statusMsg);
+            }
+            if (popupButton) {
+                popupButton.addEventListener('click', function() {
+                    const inputs = document.querySelectorAll('.popup-input');
+                    let hasEmpty = false;
+                    inputs.forEach(input => {
+                        if (!input.value.trim()) {
+                            input.style.outline = '0.1rem solid red';
+                            hasEmpty = true;
+                        } else {
+                            input.style.outline = '';
+                        }
+                    });
+                    // Show or hide warning message
+                    warning.style.display = hasEmpty ? 'flex' : 'none';
+        
+                    // Hide previous status
+                    statusMsg.style.display = 'none';
+        
+                    // If all fields filled, check for "Ақтау"
+                    if (!hasEmpty) {
+                        const cityValue = inputs[0].value.trim().toLowerCase();
+                        if (cityValue === 'ақтау') {
+                            statusMsg.textContent = 'Статус: Өңделуде';
+                            statusMsg.style.display = 'flex';
+                            statusMsg.style.color = '#FFC107';
+                        } else {
+                            // Randomly choose between "Өңделуде" or "Жоспарлануда"
+                            const statuses = [
+                                { text: 'Статус: Өңделуде', color: '#FFC107' },
+                                { text: 'Статус: Жоспарлануда', color: '#2196F3' }
+                            ];
+                            const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                            statusMsg.textContent = randomStatus.text;
+                            statusMsg.style.display = 'flex';
+                            statusMsg.style.color = randomStatus.color;
+                        }
+                    }
+                });
+                // Remove red outline and warning on input
+                document.querySelectorAll('.popup-input').forEach(input => {
+                    input.addEventListener('input', function() {
+                        if (input.value.trim()) {
+                            input.style.outline = '';
+                            // Hide warning if all fields are filled
+                            const allFilled = Array.from(document.querySelectorAll('.popup-input')).every(i => i.value.trim());
+                            if (allFilled) warning.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+        </script>
+    </section>
+    
+    <!--Всплывающие окно-->
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <div class="popup-header">
+            <div class="popup-title">Мекенжай бойынша қолжетімділікті тексеру</div>
+            <button class="close-button" onclick="hidePopup()">×</button>
+        </div>
+        <form class="popup-form">
+            <input type="text" class="popup-input" placeholder="Қала/Ауыл">
+            <input type="text" class="popup-input" placeholder="Көше">
+            <input type="text" class="popup-input" placeholder="Үй">
+            <button type="button" class="popup-button">Тексеру</button>
+        </form>
+    </div>
+<script>
+    function showTab(tabId) {
+        document.getElementById('problem').style.display = 'none';
+        document.getElementById('solution').style.display = 'none';
+        
+        if (tabId === 'problem') {
+            document.getElementById('problem').style.display = 'flex';
+        } else if (tabId === 'solution') {
+            document.getElementById('solution').style.display = 'flex';
+        }
+        
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+    
+    function showPopup() {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('popup').style.display = 'block';
+    }
+    
+    function hidePopup() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('popup').style.display = 'none';
+    }
+</script>
+<div class="container scroll-animate" id="stages-section">
+  <h1>Іске қосу кезеңдері</h1>
+  <p class="subtitle">Маңғыстау облысы бойынша желіні кезең-кезеңімен өрістету жоспары</p>
+
+  <div class="grid">
+    <div class="card scroll-animate">
+      <div>🕒</div>
+      <h2>1-кезең (MVP, 6 ай)</h2>
+      <p>3 ауыл, 1 шағын қала және 1 қала маңы аймағын қосу (пилот)</p>
+      <ul>
+        <li>Негізгі инфрақұрылымды өрістету</li>
+        <li>Алғашқы спутниктік станцияларды орнату</li>
+        <li>Тарифтер мен сенімділікті тестілеу</li>
+        <li>Клиенттерді қолдау қызметін құру</li>
+      </ul>
+    </div>
+
+    <div class="card scroll-animate">
+      <div>📅</div>
+      <h2>2-кезең (1 жыл)</h2>
+      <p>Ауылдардың 60%-ын және барлық шағын қалаларды қосу</p>
+      <ul>
+        <li>Субсидиялар мен абоненттік төлемдер арқылы монетизацияны бастау</li>
+        <li>Орталықтандырылған платформаны енгізу</li>
+        <li>Call-орталық құру</li>
+        <li>Техникалық команданы кеңейту</li>
+      </ul>
+    </div>
+
+    <div class="card scroll-animate">
+      <div>✅</div>
+      <h2>3-кезең (2 жыл)</h2>
+      <p>Облысты 100% қамту және кеңейту</p>
+      <ul>
+        <li>Маңғыстау облысын толық қамту</li>
+        <li>Көршілес өңірлерге кеңейту</li>
+        <li>Мемлекеттік сервистермен интеграция</li>
+        <li>Қосымша цифрлық қызметтерді дамыту</li>
+      </ul>
+    </div>
+  </div>
+
+  <button class="btn" onclick="openModal()">Шығын құрылымын көру</button>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal()">×</button>
+    <h3>Шамамен шығын құрылымы (1 жыл)</h3>
+    <table>
+      <tr><td>Спутниктік станциялар мен жазылымдар (10 дана)</td><td>30 млн</td></tr>
+      <tr><td>LTE мұнаралары/ретрансляторлар (20 торап)</td><td>70 млн</td></tr>
+      <tr><td>Жергілікті Wi-Fi хабтар (100 нүкте)</td><td>20 млн</td></tr>
+      <tr><td>Серверлер, бағдарламалық жасақтама, мониторинг платформасы</td><td>15 млн</td></tr>
+      <tr><td>Техникалық персонал (5-8 адам)</td><td>30 млн/жыл</td></tr>
+      <tr><td>Маркетинг, заңды сүйемелдеу</td><td>10 млн</td></tr>
+      <tr><td>Резерв/күтпеген шығындар</td><td>10 млн</td></tr>
+      <tr><td><strong>1-жылға барлығы</strong></td><td><strong>~185 млн теңге</strong></td></tr>
+    </table>
+    <p><strong>Қаржыландыру көздері:</strong></p>
+    <ul>
+      <li>Мемлекеттік гранттар (ЦДИАӨМ, Astana Hub)</li>
+      <li>Маңғыстау жергілікті бюджеті</li>
+      <li>Жеке инвестициялар / Kazakhtelecom, Beeline, Starlink серіктестігі</li>
+      <li>Халықаралық қорлар (UNDP, ADB, World Bank)</li>
+    </ul>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const scrollEls = document.querySelectorAll('#stages-section.scroll-animate, #stages-section .card.scroll-animate');
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    scrollEls.forEach(el => observer.observe(el));
+  });
+</script>
+
+<script>
+  function openModal() {
+    document.getElementById('modal').style.display = 'flex';
+  }
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+</script>
+<script src="script.js"></script>
+<footer class="footer scroll-animate">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>MangyshNet</h3>
+      <p style="font-size: 18px;">Маңғыстау облысына арналған цифрлық көпір. Біз адамдарды, бизнесті және мемлекетті тұрақты интернет арқылы байланыстырамыз.</p>
+    </div>
+    <div class="footer-column">
+      <h4>Қызметтер</h4>
+      <ul>
+        <li>Үйге</li>
+        <li>Бизнеске</li>
+        <li>Мемлекеттік мекемелерге</li>
+        <li>Тарифтер</li>
+        <li>Қолжетімділікті тексеру</li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Компания</h4>
+      <ul>
+        <li>Жоба туралы</li>
+        <li>Жаңалықтар</li>
+        <li>Инвесторларға</li>
+        <li>Серіктестерге</li>
+        <li>Вакансиялар</li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Қолдау</h4>
+      <ul>
+        <li>Техникалық қолдау</li>
+        <li>Жиі қойылатын сұрақтар</li>
+        <li>Қалай қосылуға болады</li>
+        <li>Қызметтерді төлеу</li>
+        <li>Байланыс</li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Байланыс</h4>
+      <ul>
+        <li>📧 info@mangyshnet.kz</li>
+        <li>📞 +7 (776) 024-29-03</li>
+        <li>📍 Ақтау қ., 14 ш/а, 40 ғимарат</li>
+        <li>🕒 Техникалық қолдау 24/7</li>
+        <li>💳 Онлайн төлем</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-subscribe">
+    <h4>Жаңалықтарға жазылыңыз</h4>
+    <p>Біздің соңғы жаңалықтарымыз бен жаңартуларымыздан хабардар болыңыз</p>
+    <div class="footer-subscribe-form">
+      <input type="email" placeholder="Сіздің email" />
+      <button>Жазылу</button>
+    </div>
+  </div>
+  <div class="footer-bottom footer-links">
+    <p style="font-size: 13px;">© 2025 MangyshNet. Барлық құқықтар қорғалған.</p>
+    <div>
+      <a href="/Main/Political(kz).html">Құпиялылық саясаты</a>
+      <a href="/Main/term of use(kz).html">Пайдалану шарттары</a>
+    </div>
+  </div>
+</footer>
+<style>
+    /* ...existing code... */
+#map { height: 100%; width: 100%; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+body { background-color: #fff; color: #333; line-height: 1.6; }
+header { background-color: #fff; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); }
+.header-left { display: flex; align-items: center; }
+.logo { color: #354259; font-weight: bold; text-decoration: none; font-size: 18px; }
+.nav-links { display: flex; list-style: none; right: 100px; margin: auto; }
+.nav-links li { margin: 0 15px; }
+.nav-links a { text-decoration: none; color: #354259; font-size: 14px; }
+.header-right { display: flex; align-items: center; }
+.language-selector { margin-right: 20px; color: #354259; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 60px; }
+.connect-button { background-color: #354259; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; }
+.hero-section { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 50px auto; padding: 0 50px; }
+.hero-content { flex: 1; padding-right: 30px; }
+.tag { display: inline-block; background-color: #eef1f7; color: #4a63d1; padding: 5px 10px; border-radius: 15px; font-size: 12px; margin-bottom: 15px; }
+.main-title { font-size: 42px; font-weight: bold; margin-bottom: 20px; color: rgb(14, 28, 61); line-height: 1.2; }
+.description { font-size: 16px; color: #555; margin-bottom: 30px; max-width: 500px; }
+.buttons { display: flex; gap: 15px; margin-bottom: 40px; }
+.buttons button { padding: 8px 16px; background-color: #f0f0f0; border: none; cursor: pointer; border-radius: 10px; font-size: 14px; color: #333; transition: transform 0.1s ease, box-shadow 0.1s ease; }
+.buttons button:active { transform: scale(0.96); box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15); }
+.btn-primary { background-color: #ffffff; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.btn-secondary { background-color: transparent; color: #0e1c3d; border: 1px solid #0e1c3d; padding: 12px 25px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.features { display: flex; gap: 100px; margin-top: 40px; }
+.feature { text-align: center; }
+.feature-icon { width: 50px; height: 50px; border-radius: 50%; background-color: #f0f3f8; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px; }
+.feature-title { font-size: 14px; color: #333; }
+.map-container { flex: 1; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); position: relative; }
+.map-placeholder { width: 100%; height: 400px; background-color: #f5f7fa; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: #888; }
+.map-legend { position: absolute; bottom: 0; left: 370px; background-color: white; padding: 15px; border-radius: 15px 0px 0px 0px; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
+.legend-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; }
+.legend-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 12px; }
+.legend-color { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+.map-link { position: absolute; bottom: 20px; left: 20px; background-color: #4a63d1; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+.problem-solution-section { max-width: 1200px; margin: 100px auto; padding: 0 50px; text-align: center; }
+.section-title { font-size: 32px; margin-bottom: 15px; }
+.section-description { font-size: 16px; color: #666; margin-bottom: 40px; }
+.problem-solution-tabs { justify-content: center; margin-bottom: 30px; gap: 10px; overflow: auto; background: #e4e4e4; border-radius: 30px; padding: 10px; display: inline-flex ; flex-wrap: nowrap; }
+.tab { padding: 10px 70px; background-color: #f0f0f0; border: none; cursor: pointer; font-size: 16px; color: #666; border-radius: 20px; transition: all 0.3s; }
+.tab.active { background-color: #fff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+.cards-container { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+.card { background-color: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); padding: 30px; flex: 1; display: flex; flex-direction: column; align-items: center; max-width: 250px; }
+.card-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
+.card-icon.red { background-color: #fff0f0; color: #f44336; }
+.card-icon.blue { background-color: #f0f3f8; color: #2196F3; }
+.card-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+.card-description { font-size: 14px; color: #666; text-align: center; }
+/* Map Coverage Section */
+.map-coverage-section { max-width: 900px; margin: 100px auto; padding: 0 50px; text-align: center; }
+.map-filters { display: inline-flex; justify-content: center; align-items: center; gap: 10px; margin: 20px auto; padding: 10px 16px; background-color: #f5f5f5; border: 1px solid #ccc; border-radius: 12px; }
+.map-filters { display: inline-flex; justify-content: center; align-items: center; gap: 10px; margin: 20px auto; padding: 10px 16px; background-color: #f5f5f5; border: 1px solid #ccc; border-radius: 12px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+.map-controls-block { display: flex; justify-content: center; align-items: center; gap: 130px; margin-bottom: 20px; }
+.map-filters { display: inline-flex; justify-content: center; align-items: center; gap: 6px; margin: 15px auto; padding: 6px 10px; background-color: #f5f5f5; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
+.filter { padding: 5px 12px; background-color: #f0f0f0; border: none; cursor: pointer; border-radius: 16px; font-size: 14px; color: #333; transition: transform 0.1s ease, box-shadow 0.1s ease; }
+.filter:active { transform: scale(0.96); box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15); }
+.filter.active { background-color: #fff; color: #000; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border: 1px solid #ddd; }
+.search-container { display: flex; justify-content: center; align-items: center; gap: 10px; }
+.search-input { padding: 8px 15px; border: 1px solid #ddd; border-radius: 5px; margin-right: 10px; }
+.map-display { background-color: #b0b0b0; height: 400px; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: white; font-size: 16px; position: relative; }
+.map-controls { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 5px; }
+.map-control { width: 30px; height: 30px; background-color: white; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #000; font-size: 16px; }
+.map-legend-right { position: absolute; bottom: 0; right: 653px; background-color: rgb(255, 255, 255); padding: 15px; border-radius: 0 15px 15px 0; width: 150px; position: absolute; }
+.check-button { background-color: #354259; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+.popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); z-index: 1000; width: 400px; }
+.popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.popup-title { font-size: 18px; font-weight: bold; }
+.close-button { background: none; border: none; font-size: 20px; cursor: pointer; }
+.popup-form { display: flex; flex-direction: column; gap: 15px; }
+.popup-input { padding: 10px; border: 1px solid rgb(212, 212, 212); border-radius: 5px; }
+.popup-button { background-color: #354259; color: rgb(255, 255, 255); border: none; padding: 10px; border-radius: 5px; cursor: pointer; align-self: flex-end; }
+.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999; }
+.legend-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 12px; color: black; }
+.legend-title { display: flex; margin-bottom: 8px; font-size: 16px; color: black; }
+.footer { background-color: #0e1c3d; color: white; padding: 50px 30px 30px 30px; font-size: 14px; }
+.footer-container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; margin-bottom: 40px; }
+.footer-column { flex: 1 1 160px; min-width: 160px; }
+.footer-column h4, .footer-column h3 { font-size: 16px; margin-bottom: 10px; }
+.footer-column ul { list-style: none; padding: 0; }
+.footer-column ul li { margin-bottom: 8px; color: #ccc; }
+.footer-icons span { margin-right: 10px; font-size: 20px; cursor: pointer; }
+.footer-button { margin-top: 15px; padding: 8px 12px; background-color: #354259; border: none; color: white; border-radius: 5px; cursor: pointer; }
+.footer-subscribe { background-color: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px; }
+.footer-subscribe-form { margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.footer-subscribe-form input { padding: 10px; border-radius: 5px; border: none; width: 250px; }
+.footer-subscribe-form button { padding: 10px 20px; background-color: #ffffff; color: #0e1c3d; border: none; border-radius: 5px; cursor: pointer; }
+.footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; font-size: 13px; color: #bbb; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 20px; }
+.footer-links a { color: #bbb; margin-left: 20px; text-decoration: none; }
+.scroll-animate { opacity: 0; transform: translateY(40px); transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1); }
+.scroll-animate.visible { opacity: 1; transform: none; }
+.container { max-width: 1300px; margin: 0 auto; padding: 2rem; text-align: center; }
+h1 { font-size: 2rem; font-weight: 600; }
+.subtitle { color: #6b7280; margin-bottom: 2rem; }
+.grid { display: flex; justify-content: center; gap: 2.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.card { background-color: #fff; border-radius: 1rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); padding: 2rem; text-align: center; max-width: 400px; flex: 1 1 340px; margin: 0 0.5rem; }
+.card h2 { font-size: 1.125rem; font-weight: 600; margin-top: 0.5rem; }
+.card p { color: #6b7280; margin-bottom: 1rem; }
+.card ul { padding-left: 1rem; text-align: left; display: inline-block; }
+.card ul li { margin-bottom: 0.5rem; list-style: disc; }
+.btn { padding: 0.75rem 1.5rem; border: 1px solid #4f46e5; background: white; color: #4f46e5; font-weight: 600; border-radius: 0.5rem; cursor: pointer; }
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 999; }
+.modal-content { background-color: #fff; padding: 2rem; border-radius: 1rem; max-width: 600px; width: 90%; text-align: left; }
+.modal-content h3 { margin-top: 0; }
+.modal-content table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.modal-content td { padding: 0.5rem 0; }
+.modal-content td:first-child { color: #374151; }
+.modal-content td:last-child { text-align: right; color: #111827; font-weight: 500; }
+.close-btn { float: right; background: none; border: none; font-size: 1.25rem; cursor: pointer; }
+.scroll-animate { opacity: 0; transform: translateY(40px); transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1); }
+.scroll-animate.visible { opacity: 1; transform: none; }
+.leaflet-control-attribution { display: none !important; }
+.leaflet-top { z-index: 1000 !important; pointer-events: auto !important; position: static !important; }
+/* ...existing code... */
+</style>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangyshNet</title>
+    <link rel="icon" href="/Pictures/a125a2ad-156f-49ff-a82f-c3f9b7b42977_removalai_preview.png">
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+</head>
+<body>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+
+    header {
+    background-color: #fff;
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    color: #354259;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    right: 100px;
+    margin: auto;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #354259;
+    font-size: 14px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.language-selector {
+    margin-right: 20px;
+    color: #354259;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.connect-button {
+    background-color: #354259;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+    .chat-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+    }
+
+    .chat-header {
+      padding: 16px;
+      background: #2c3e50;
+      color: #fff;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .message.user .bubble {
+      margin-left: auto;
+      background: #3498db;
+      color: #fff;
+      position: relative;
+    }
+
+    .message.bot .bubble {
+      margin-right: auto;
+      background: #ecf0f1;
+      color: #2c3e50;
+    }
+
+    .bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .edit-btn {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      opacity: 0.7;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-input textarea {
+      flex: 1;
+      border: none;
+      padding: 12px;
+      resize: none;
+      font-size: 14px;
+      border-bottom-left-radius: 8px;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+
+    .chat-input button {
+      background: #2c3e50;
+      color: #fff;
+      border: none;
+      padding: 0 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-bottom-right-radius: 8px;
+    }
+
+    .chat-input textarea:focus,
+    .chat-input button:focus {
+      outline: none;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: #f4f4f4;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: #bbb;
+      border-radius: 3px;
+    }
+
+    /* Ограничение размера блока редактирования */
+    .edit-area {
+      width: 100%;
+      max-height: 60px;
+      overflow-y: auto;
+      font-size: 14px;
+      padding: 4px;
+      margin-bottom: 4px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      resize: vertical;
+    }
+
+    .save-btn {
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      padding: 4px 8px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+      <header style="position: sticky; top: 0; background-color: white; z-index: 1000;">
+        <div class="header-left">
+            <a href="#" class="logo">MangyshNet</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/Main/Main(kz).html">Басты бет</a></li>
+            <li><a href="/Main/About us(kz).html">Жоба туралы</a></li>
+            <li><a href="/Main/tarrifs(kz).html">Қызметтер</a></li>
+            <li><a href="/Main/Helper(kz).html">Қолдау</a></li>
+        </ul>
+        <div class="header-right">
+            <nav class="language-selector">
+                <ul>
+                    <li style="display: inline;"><a href="/Main/Helper.html" style="padding: 6px 14px; border-radius: 4px; background: #e0e0e0; color: #354259; margin-right: 8px; text-decoration: none; font-weight: bold; transition: background 0.2s;">RU</a></li>
+                    <li style="display: inline;"><a href="/Main/Helper(kz).html" style="padding: 6px 14px; border-radius: 4px; background: #354259; color: #e0e0e0; margin-right: 8px; text-decoration: none; font-weight: bold; transition: background 0.2s;">KZ</a></li>
+                    <li style="display: inline;"><a href="/Main/Helper(eng).html" style="padding: 6px 14px; border-radius: 4px; background: #e0e0e0; color: #354259; text-decoration: none; font-weight: bold; transition: background 0.2s;">EN</a></li>
+                </ul>
+            </nav>
+            <link href="/Main/tarrifs(kz).html" rel="stylesheet">
+            <a href="/Main/tarrifs(kz).html" class="connect-button">Қосылу</a>
+        </div>
+        <div id="theme-toggle" style="margin-left: 20px; cursor: pointer; font-size: 24px;">
+            <span id="theme-icon">☀</span>
+        </div>
+    </header>
+    <script>
+        // Анимация для плавного перехода темы
+        function animateThemeChange(isDark) {
+            document.body.style.transition = 'background-color 0.5s, color 0.5s';
+            setTimeout(() => {
+                document.body.style.transition = '';
+            }, 600);
+        }
+
+        document.getElementById('theme-toggle').onclick = function() {
+            const isDark = !document.body.classList.contains('dark-theme');
+            document.body.classList.toggle('dark-theme');
+            animateThemeChange(isDark);
+            const themeIcon = document.getElementById('theme-icon');
+            if(document.body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '☾'; // Луна
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '☀'; // Солнце
+                localStorage.setItem('theme', 'light');
+            }
+        };
+
+        // Сохраняем тему между перезагрузками
+        (function() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+            body.dark-theme {
+              background-color: #181a20 !important;
+              color: #e0e0e0 !important;
+              transition: background-color 0.5s, color 0.5s;
+            }
+            .dark-theme header {
+              background-color: #23262f !important;
+              color: #e0e0e0 !important;
+              box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+              transition: background-color 0.5s, color 0.5s;
+            }
+            .dark-theme .logo,
+            .dark-theme .nav-links a,
+            .dark-theme .language-selector,
+            .dark-theme .connect-button {
+              color: #e0e0e0 !important;
+              transition: color 0.5s;
+            }
+            .dark-theme .connect-button {
+              background-color: #353b48 !important;
+              color: #fff !important;
+              transition: background-color 0.5s, color 0.5s;
+            }
+            .dark-theme .chat-container {
+              background-color: #23262f !important;
+              color: #e0e0e0 !important;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            }
+            .dark-theme .chat-header {
+              background: #2c3e50 !important;
+              color: #fff !important;
+            }
+            .dark-theme .chat-messages {
+              background: #23262f !important;
+              color: #e0e0e0 !important;
+            }
+            .dark-theme .bubble {
+              background: #353b48 !important;
+              color: #e0e0e0 !important;
+            }
+            .dark-theme .message.user .bubble {
+              background: #2962a8 !important;
+              color: #fff !important;
+            }
+            .dark-theme .message.bot .bubble {
+              background: #2c3e50 !important;
+              color: #e0e0e0 !important;
+            }
+            .dark-theme .edit-btn {
+              color: #e0e0e0 !important;
+            }
+            .dark-theme .chat-input {
+              border-top: 1px solid #353b48 !important;
+            }
+            .dark-theme .chat-input textarea {
+              background: #23262f !important;
+              color: #e0e0e0 !important;
+              border-bottom-left-radius: 8px;
+            }
+            .dark-theme .chat-input button {
+              background: #2c3e50 !important;
+              color: #fff !important;
+              border-bottom-right-radius: 8px;
+            }
+            .dark-theme .edit-area {
+              background: #23262f !important;
+              color: #e0e0e0 !important;
+              border: 1px solid #353b48 !important;
+            }
+            .dark-theme .save-btn {
+              background: #27ae60 !important;
+              color: #fff !important;
+            }
+            .dark-theme #theme-toggle {
+              background: none !important;
+              color: #fff !important;
+              border: none !important;
+            }
+            .dark-theme h2, .dark-theme p {
+              color: #e0e0e0 !important;
+            }
+            `;
+            document.head.appendChild(style);
+
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('theme-icon').textContent = '☾';
+            }
+        })();
+
+        // Логика перехода на страницу тарифов (как на tariffs.html)
+        document.querySelectorAll('.connect-button, .btn-primary').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'tariffs.html';
+            });
+        });
+    </script>
+
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>MangyshNet қолдау қызметі</h2>
+    <p>Сұрағыңызды қойыңыз, бот тек жоба мен компания тақырыбында жауап береді.</p>
+  </div>
+
+  <div class="chat-messages" id="chat-messages"></div>
+
+  <div class="chat-input" style="font-size: 17px; font-family: 'Segoe UI', Arial, sans-serif;">
+    <textarea id="user-input" rows="2" placeholder="Ваш вопрос..." style="font-size: 17px; font-family: 'Segoe UI', Arial, sans-serif;"></textarea>
+    <button id="send-btn" style="font-size: 17px; font-family: 'Segoe UI', Arial, sans-serif;">Отправить</button>
+  </div>
+</div>
+
+<script>
+const responses = [
+    {
+        keywords: ['спутниковая', 'satellite', 'связь', 'спутник', 'байланыс'],
+        reply: 'MangyshNet бүкіл Маңғыстау бойынша спутниктік және желілік байланыс ұсынады. Біз шалғай аудандарда тұрақты интернетпен қамтамасыз ету үшін байланыс нүктелерін кеңейтеміз.'
+    },
+    {
+        keywords: ['стоимость', 'тариф', 'цена', 'баға', 'тариф'],
+        reply: 'Байланыс қызметтерінің тарифтерін <a href="tariffs.html" target="_blank" style="color:#2c3e50;text-decoration:underline;">«Тарифтер»</a> бетінде көре аласыз. Қай қызмет қызықтыратынын нақтылаңыз.'
+    },
+    {
+        keywords: ['покрытие', 'map', 'гео', 'карта', 'қамту', 'карта'],
+        reply: 'Қ pokrytie аймақтарының интерактивті картасы <a href="main.html" target="_blank" style="color:#2c3e50;text-decoration:underline;">басты бетте</a> қолжетімді.'
+    },
+    {
+        keywords: ['о нас', 'about', 'компания', 'мы', 'біз туралы'],
+        reply: 'Біздің компания туралы <a href="About us.Html" target="_blank" style="color:#2c3e50;text-decoration:underline;">«Біз туралы»</a> бетінде оқыңыз.'
+    },
+    {
+        keywords: ['поддержка', 'саппорт', 'help', 'қолдау'],
+        reply: 'Сіз қолдау бетінде тұрсыз. Сұрағыңызды қойыңыз — мен көмектесуге тырысамын.'
+    },
+    {
+        keywords: ['привет', 'здравствуйте', 'добрый', 'сәлем', 'қайырлы'],
+        reply: 'Сәлеметсіз бе! MangyshNet бойынша қалай көмектесе аламын?'
+    },
+    {
+        keywords: ['спасибо', 'thank', 'благодарю', 'рахмет'],
+        reply: 'Рахмет! MangyshNet бойынша сұрақтарыңыз болса — хабарласыңыз.'
+    },
+    {
+        keywords: ['пока', 'до свидания', 'увидимся', 'сау болыңыз'],
+        reply: 'Кездескенше! MangyshNet қызметтері қажет болса, хабарласыңыз.'
+    },
+    {
+        keywords: ['вакансия', 'работа', 'карьера', 'жұмыс', 'мансап'],
+        reply: 'Ашық вакансиялар мен мансап мүмкіндіктері туралы ақпаратты <a href="career.html" target="_blank" style="color:#2c3e50;text-decoration:underline;">«Мансап»</a> бетінде таба аласыз.'
+    }
+];
+
+const fallbackReplies = [
+    'Кешіріңіз, мен тек MangyshNet жобасы мен компаниясы туралы сұрақтарға жауап бере аламын.',
+    'Өкінішке орай, бұл сұраққа көмектесе алмаймын. MangyshNet тақырыбында сұрақ қойыңыз.',
+    'MangyshNet қызметтері бойынша сұрағыңызды нақтылаңыз.'
+];
+
+
+  const chatMessages = document.getElementById('chat-messages');
+  const userInput = document.getElementById('user-input');
+  const sendBtn = document.getElementById('send-btn');
+
+  const sessionKey = 'mangyshnet-chat';
+  let messages = [];
+
+  function loadChatHistory() {
+    const history = sessionStorage.getItem(sessionKey);
+    if (history) {
+      messages = JSON.parse(history);
+      renderMessages();
+    } else {
+    addMessage('Сәлеметсіз бе! Мен MangyshNet қолдау боты боламын. Сұрағыңызды қойыңыз.', 'bot');
+    }
+  }
+
+  function saveHistory() {
+    sessionStorage.setItem(sessionKey, JSON.stringify(messages));
+  }
+
+  function renderMessages() {
+    chatMessages.innerHTML = '';
+    messages.forEach((msg, idx) => appendMessageToDOM(msg.text, msg.sender, idx));
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function addMessage(text, sender) {
+    messages.push({ text, sender });
+    saveHistory();
+    appendMessageToDOM(text, sender, messages.length - 1);
+  }
+
+  function appendMessageToDOM(text, sender, index) {
+    const frag = document.createDocumentFragment();
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message', sender);
+
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
+    bubble.innerHTML = text;
+
+    if (sender === 'user') {
+      const editBtn = document.createElement('button');
+      editBtn.classList.add('edit-btn');
+      editBtn.textContent = '✎';
+    editBtn.title = 'Хабарламаны өңдеу';
+      editBtn.dataset.index = index;
+      editBtn.addEventListener('click', handleEdit);
+      bubble.appendChild(editBtn);
+    }
+
+    msgDiv.appendChild(bubble);
+    frag.appendChild(msgDiv);
+    chatMessages.appendChild(frag);
+  }
+
+  function findResponse(userText) {
+    const lower = userText.toLowerCase();
+    for (let item of responses) {
+      if (item.keywords.some(k => lower.includes(k))) {
+        return item.reply;
+      }
+    }
+    return fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
+  }
+
+  function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+    userInput.value = '';
+    addMessage(text, 'user');
+    setTimeout(() => {
+      const reply = findResponse(text);
+      addMessage(reply, 'bot');
+    }, 300);
+  }
+
+  function handleEdit(e) {
+    const idx = parseInt(e.currentTarget.dataset.index, 10);
+    const bubbleDiv = e.currentTarget.parentElement;
+    const originalText = messages[idx].text;
+
+    const textarea = document.createElement('textarea');
+    textarea.value = originalText;
+    textarea.classList.add('edit-area');
+
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = 'Сақтау';
+    saveBtn.classList.add('save-btn');
+
+    bubbleDiv.innerHTML = '';
+    bubbleDiv.appendChild(textarea);
+    bubbleDiv.appendChild(saveBtn);
+
+    saveBtn.addEventListener('click', () => {
+      const newText = textarea.value.trim() || originalText;
+      messages[idx].text = newText;
+      messages = messages.slice(0, idx + 1);
+      saveHistory();
+      renderMessages();
+      setTimeout(() => {
+        const newReply = findResponse(newText);
+        addMessage(newReply, 'bot');
+      }, 300);
+    });
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+
+  userInput.addEventListener('keyup', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  window.addEventListener('load', () => {
+    loadChatHistory();
+    userInput.focus();
+  });
+</script>
+
+</body>
+</html>

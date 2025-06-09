@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Подключение | MangyshNet</title>
+  <link rel="icon" href="/Pictures/Remove-bg.ai_1747727252461.png" type="image/png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      margin: 0;
+      padding: 0;
+      color: #000;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .box1 {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      flex: 1;
+      min-width: 300px;
+      margin-right: 20px;
+    }
+
+    .box2 {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      flex: 2;
+      min-width: 400px;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .step-icon {
+      font-size: 20px;
+      min-width: 30px;
+    }
+
+    .step-text {
+      font-size: 14px;
+    }
+
+    .step-text strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .button {
+      display: inline-block;
+      text-align: center;
+      padding: 10px;
+      background: #060b63;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #030537;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0 20px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      background: #f5f5f5;
+      border-radius: 8px;
+      transition: background 0.3s;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tab.active {
+      background: #2c2c6c;
+      color: #fff;
+    }
+
+    .plans {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .plan-card {
+      flex: 1 1 30%;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      transition: transform 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .plan-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .plan-price {
+      font-size: 24px;
+      color: #2c2c6c;
+      margin: 10px 0;
+    }
+
+    .plan-speed {
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px;
+      text-align: left;
+    }
+
+    .features li {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .features li:before {
+      content: "✓";
+      color: #060b63;
+      margin-right: 5px;
+    }
+
+    .select-btn {
+      padding: 10px;
+      width: 100%;
+      border: none;
+      background: #060b63;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .select-btn:hover {
+      background-color: #030537;
+    }
+
+    .plan-card.recommended {
+      border: 2px solid #060b63;
+      position: relative;
+    }
+
+    .recommended-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #060b63;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 16px;
+      font-size: 12px;
+    }
+
+    /* Header styles */
+    header {
+      background-color: #fff;
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      color: #354259;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      margin: 0 auto;
+    }
+
+    .nav-links li {
+      margin: 0 15px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #354259;
+      font-size: 14px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .language-selector {
+      margin-right: 20px;
+      color: #354259;
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    /* Popup styles */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      width: 1000px;
+    }
+
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .popup-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .popup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .popup-input {
+      padding: 10px;
+      border: 1px solid rgb(212, 212, 212);
+      border-radius: 5px;
+    }
+
+    .popup-button {
+      background-color: #354259;
+      color: rgb(255, 255, 255);
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      align-self: center;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .check-button {
+      background-color: #060b63;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;  
+      cursor: pointer;
+      margin-top: 20px;
+      width: 50vh;
+    }
+
+    .check-button:hover {
+      background-color: #030537;
+    }
+
+    .tab-icon {
+      margin-right: 5px;
+    }
+
+    .price-subtitle {
+      font-size: 12px;
+      color: #666;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <header style="position: sticky; top: 0; background-color: white; z-index: 1000;">
+        <div class="header-left">
+            <a href="#" class="logo">MangyshNet</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/Main/main.html">Главная</a></li>
+            <li><a href="/Main/About us.Html">О проекте</a></li>
+            <li><a href="/Main/tariffs.html">Услуги</a></li>
+            <li><a href="/Main/Helper.html">Поддержка</a></li>
+        </ul>
+        <div class="header-right">
+            <nav class="language-selector">
+                <ul>
+                    <li style="display: inline;"><a href="/Main/tariffs.html" style="padding: 6px 14px; border-radius: 4px; background: #354259; color: #fff; margin-right: 8px; text-decoration: none; font-weight: bold; transition: background 0.2s;">RU</a></li>
+                    <li style="display: inline;"><a href="/Main/tarrifs(kz).html" style="padding: 6px 14px; border-radius: 4px; background: #e0e0e0; color: #354259; margin-right: 8px; text-decoration: none; font-weight: bold; transition: background 0.2s;">KZ</a></li>
+                    <li style="display: inline;"><a href="/Main/tarrifs(eng).html" style="padding: 6px 14px; border-radius: 4px; background: #e0e0e0; color: #354259; text-decoration: none; font-weight: bold; transition: background 0.2s;">EN</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div id="theme-toggle" style="margin-left: 20px; cursor: pointer; font-size: 24px;">
+            <span id="theme-icon">☀</span>
+        </div>
+    </header>
+
+  <script>
+    // Theme toggle logic (consistent with other pages)
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.getElementById('theme-icon').textContent = '☾';
+      } else {
+        document.body.classList.remove('dark-theme');
+        document.getElementById('theme-icon').textContent = '☀';
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    document.getElementById('theme-toggle').onclick = function() {
+      const isDark = document.body.classList.toggle('dark-theme');
+      setTheme(isDark ? 'dark' : 'light');
+    };
+
+    // Insert dark theme styles (same as other pages)
+    (function() {
+      const style = document.createElement('style');
+      style.innerHTML = `
+        body.dark-theme {
+          background: #181a20 !important;
+          color: #e0e0e0 !important;
+          transition: background 0.5s, color 0.5s;
+        }
+        body {
+          transition: background 0.5s, color 0.5s;
+        }
+        .dark-theme header {
+          background: #23262f !important;
+          color: #e0e0e0 !important;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+          transition: background 0.5s, color 0.5s;
+        }
+        header {
+          transition: background 0.5s, color 0.5s;
+        }
+        .dark-theme .logo,
+        .dark-theme .nav-links a,
+        .dark-theme .language-selector {
+          color: #e0e0e0 !important;
+          transition: color 0.5s;
+        }
+        .logo,
+        .nav-links a,
+        .language-selector {
+          transition: color 0.5s;
+        }
+        .dark-theme .box1,
+        .dark-theme .box2 {
+          background: #23262f !important;
+          border: 1px solid #353b48 !important;
+          transition: background 0.5s, border 0.5s;
+        }
+        .box1,
+        .box2 {
+          transition: background 0.5s, border 0.5s;
+        }
+        .dark-theme .plan-card {
+          background: #181a20 !important;
+          color: #e0e0e0 !important;
+          transition: background 0.5s, color 0.5s;
+        }
+        .plan-card {
+          transition: background 0.5s, color 0.5s;
+        }
+        .dark-theme .tab {
+          background: #353b48 !important;
+          color: #e0e0e0 !important;
+          transition: background 0.5s, color 0.5s;
+        }
+        .tab {
+          transition: background 0.5s, color 0.5s;
+        }
+        .dark-theme .tab.active {
+          background: #060b63 !important;
+          color: #fff !important;
+        }
+        .dark-theme .subtitle {
+          color: #b0b0b0 !important;
+          transition: color 0.5s;
+        }
+        .subtitle {
+          transition: color 0.5s;
+        }
+        .dark-theme .plan-price {
+          color: #5b5baf !important;
+          transition: color 0.5s;
+        }
+        .plan-price {
+          transition: color 0.5s;
+        }
+        .dark-theme .footer {
+          background: #050e22 !important;
+          color: #e0e0e0 !important;
+          transition: background 0.5s, color 0.5s;
+        }
+        .footer {
+          transition: background 0.5s, color 0.5s;
+        }
+        .dark-theme .footer-links a {
+          color: #b0b0b0 !important;
+          transition: color 0.5s;
+        }
+        .footer-links a {
+          transition: color 0.5s;
+        }
+        .dark-theme .footer-bottom {
+          border-top: 1px solid rgba(255,255,255,0.1) !important;
+          color: #b0b0b0 !important;
+          transition: border-top 0.5s, color 0.5s;
+        }
+        .footer-bottom {
+          transition: border-top 0.5s, color 0.5s;
+        }
+        .dark-theme .footer-subscribe-form input {
+          background: #23262f !important;
+          color: #e0e0e0 !important;
+          border: 1px solid #353b48 !important;
+          transition: background 0.5s, color 0.5s, border 0.5s;
+        }
+        .footer-subscribe-form input {
+          transition: background 0.5s, color 0.5s, border 0.5s;
+        }
+        .dark-theme .popup {
+          background: #23262f !important;
+          color: #e0e0e0 !important;
+          transition: background 0.5s, color 0.5s;
+        }
+        .popup {
+          transition: background 0.5s, color 0.5s;
+        }
+        .dark-theme .popup-input {
+          background: #181a20 !important;
+          color: #e0e0e0 !important;
+          border: 1px solid #353b48 !important;
+          transition: background 0.5s, color 0.5s, border 0.5s;
+        }
+        .popup-input {
+          transition: background 0.5s, color 0.5s, border 0.5s;
+        }
+        .dark-theme .popup-button {
+          background: #060b63 !important;
+          color: #fff !important;
+          transition: background 0.5s, color 0.5s;
+        }
+        .popup-button {
+          transition: background 0.5s, color 0.5s;
+        }
+        .dark-theme .close-button{
+          color: #FFFFFF !important
+        }
+      `;
+      document.head.appendChild(style);
+
+      // Restore theme from localStorage
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.getElementById('theme-icon').textContent = '☾';
+      }
+    })();
+  </script>
+
+  <div class="container">
+    <div class="box1">
+      <h3>Процесс подключения</h3>
+      <div class="step">
+        <div class="step-icon">📞</div>
+        <div class="step-text">
+          <strong>1. Оставьте заявку</strong>
+          <div>Заполните форму на сайте или позвоните нам</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">📅</div>
+        <div class="step-text">
+          <strong>2. Согласуйте дату</strong>
+          <div>Наш специалист свяжется с вами для уточнения деталей</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">🔌</div>
+        <div class="step-text">
+          <strong>3. Подключение</strong>
+          <div>Инженер приедет и установит необходимое оборудование</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">📶</div>
+        <div class="step-text">
+          <strong>4. Пользуйтесь интернетом</strong>
+          <div>Наслаждайтесь стабильным высокоскоростным интернетом</div>
+        </div>
+      </div>
+      <button class="button" onclick="showPopup()">Оставить заявку</button>
+    </div>
+
+    <div class="box2">
+      <h3>Выберите тариф</h3>
+      <div class="subtitle">Подберите оптимальный тариф для ваших потребностей</div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="showPlans('home')">
+          <span class="tab-icon">🏠</span> Для Дома
+        </div>
+        <div class="tab" onclick="showPlans('business')">
+          <span class="tab-icon">💼</span> Для Бизнеса
+        </div>
+        <div class="tab" onclick="showPlans('gov')">
+          <span class="tab-icon">🏛️</span> Для Госучреждений
+        </div>
+      </div>
+      <div class="plans" id="plan-container"></div>
+    </div>
+  </div>
+  <style>
+    .tab {
+      position: relative;
+      overflow: hidden;
+    }
+    .tab::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 0;
+      height: 3px;
+      background: #060b63;
+      transition: width 0.35s cubic-bezier(.4,2,.6,1), left 0.35s cubic-bezier(.4,2,.6,1);
+      border-radius: 2px;
+    }
+    .tab:hover:not(.active) {
+      background: #e0e0e0;
+      color: #060b63;
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 4px 16px rgba(6, 11, 99, 0.10);
+      transition: background 0.3s, color 0.3s, transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s cubic-bezier(.4,2,.6,1);
+    }
+    .tab:hover:not(.active)::after {
+      width: 80%;
+      left: 10%;
+    }
+    .plan-card {
+      transition: box-shadow 0.3s, border 0.3s, transform 0.25s cubic-bezier(.4,2,.6,1);
+    }
+    .plan-card:hover {
+      box-shadow: 0 8px 32px rgba(6, 11, 99, 0.16);
+      border: 2px solid #060b63;
+      transform: translateY(-8px) scale(1.03) rotate(-1deg);
+      z-index: 2;
+      transition: box-shadow 0.3s, border 0.3s, transform 0.25s cubic-bezier(.4,2,.6,1);
+    }
+    .plan-card .select-btn {
+      transition: background 0.25s, transform 0.2s;
+    }
+    .plan-card:hover .select-btn {
+      background: #2c2c6c;
+      transform: scale(1.05);
+    }
+    .dark-theme .tab:hover:not(.active) {
+      background: #23262f;
+      color: #5b5baf;
+      box-shadow: 0 4px 16px rgba(91, 91, 175, 0.12);
+      transform: translateY(-3px) scale(1.04);
+    }
+    .dark-theme .tab:hover:not(.active)::after {
+      background: #5b5baf;
+      width: 80%;
+      left: 10%;
+    }
+    .dark-theme .plan-card:hover {
+      box-shadow: 0 8px 32px rgba(91, 91, 175, 0.18);
+      border: 2px solid #5b5baf;
+      transform: translateY(-8px) scale(1.03) rotate(-1deg);
+    }
+    .dark-theme .plan-card:hover .select-btn {
+      background: #5b5baf;
+    }
+  </style>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="popup" id="popup">
+    <div class="popup-header">
+      <div class="popup-title">Заполните данные</div>
+      <button class="close-button" onclick="hidePopup()">×</button>
+    </div>
+    <form class="popup-form" id="popup-form">
+      <input type="text" class="popup-input" placeholder="Имя">
+      <input type="text" class="popup-input" placeholder="Фамилия">
+      <input type="text" class="popup-input" placeholder="Email">
+      <input type="text" class="popup-input" placeholder="Телефон" id="phone-input" maxlength="18">
+      <button type="button" class="popup-button" id="popup-check-btn">Проверить</button>
+    </form>
+    <style>
+      .popup-input.invalid {
+        border-color: #e74c3c !important;
+        background: #ffeaea !important;
+      }
+      .dark-theme .popup-input.invalid {
+        border-color: #e74c3c !important;
+        background: #3a2323 !important;
+      }
+    </style>
+      <script>
+      // Phone input mask: +7(777)-777-77-77
+      const phoneInput = document.getElementById('phone-input');
+      phoneInput.addEventListener('input', function(e) {
+      let value = this.value.replace(/\D/g, ''); // Remove all non-digits
+      value = value.slice(0, 12); // Limit to 12 digits
+
+      let formatted = '+';
+      if (value.length > 0) {
+      formatted += value.substring(0, 1); // country code
+      }
+      if (value.length > 1) {
+      formatted += '(' + value.substring(1, 4); // next 3 digits
+      }
+      if (value.length >= 4) {
+      formatted += ')';
+      }
+      if (value.length > 5) {
+      formatted += '-' + value.substring(4, 7);
+      }
+      if (value.length > 7) {
+      formatted += '-' + value.substring(7, 9);
+      }
+      if (value.length > 9) {
+      formatted += '-' + value.substring(9, 12);
+      }
+
+      this.value = formatted;
+      });
+
+      // Success popup logic
+      function showSuccessPopup() {
+      let successPopup = document.getElementById('success-popup');
+      if (!successPopup) {
+      successPopup = document.createElement('div');
+      successPopup.id = 'success-popup';
+      successPopup.style.position = 'fixed';
+      successPopup.style.top = '50%';
+      successPopup.style.left = '50%';
+      successPopup.style.transform = 'translate(-50%, -50%)';
+      successPopup.style.background = '#fff';
+      successPopup.style.padding = '32px 40px';
+      successPopup.style.borderRadius = '12px';
+      successPopup.style.boxShadow = '0 8px 32px rgba(6,11,99,0.18)';
+      successPopup.style.zIndex = '2000';
+      successPopup.style.fontSize = '20px';
+      successPopup.style.textAlign = 'center';
+      successPopup.style.color = '#060b63';
+      successPopup.innerHTML = 'Заявка успешно отправлена!';
+      document.body.appendChild(successPopup);
+      } else {
+      successPopup.style.display = 'block';
+      }
+      setTimeout(() => {
+      successPopup.style.display = 'none';
+      hidePopup();
+      }, 1800);
+      }
+
+      document.getElementById('popup-check-btn').onclick = function() {
+      const inputs = document.querySelectorAll('#popup-form .popup-input');
+      let hasEmpty = false;
+      inputs.forEach(input => {
+      if (!input.value.trim()) {
+      input.classList.add('invalid');
+      hasEmpty = true;
+      } else {
+      input.classList.remove('invalid');
+      }
+      });
+      if (!hasEmpty) {
+      showSuccessPopup();
+      }
+      };
+      // Remove red on input
+      document.querySelectorAll('#popup-form .popup-input').forEach(input => {
+      input.addEventListener('input', function() {
+      if (this.value.trim()) {
+      this.classList.remove('invalid');
+      }
+      });
+      });
+    </script>
+  </div>
+
+  <script>
+    const plansData = {
+      home: [
+        {
+          title: "Домашний Базовый",
+          price: "4 990 ₸",
+          speed: "100 Мбит/с",
+          features: ["Безлимитный интернет", "До 100 Мбит/с скорость", "Подключение до 5 устройств", "Техподдержка в рабочее время"]
+        },
+        {
+          title: "Домашний Про",
+          price: "8 990 ₸",
+          speed: "500 Мбит/с",
+          features: ["Безлимитный интернет", "До 500 Мбит/с скорость", "Подключение до 10 устройств", "Техподдержка 24/7", "Wi-Fi роутер в комплекте"]
+        },
+        {
+          title: "Домашний Премиум",
+          price: "12 990 ₸",
+          speed: "1000 Мбит/с",
+          features: ["Безлимитный интернет", "До 1000 Мбит/с скорость", "Неограниченное количество устройств", "Приоритетная техподдержка 24/7", "Wi-Fi Mesh система (2 точки)", "Статический IP-адрес"]
+        }
+      ],
+      business: [
+        {
+          title: "Бизнес Старт",
+          price: "15 990 ₸",
+          speed: "250 Мбит/с",
+          features: ["Симметричный канал 225 Мбит/с", "Статический IP-адрес", "Базовая техподдержка", "До 15 подключений"]
+        },
+        {
+          title: "Бизнес Про",
+          price: "25 990 ₸",
+          speed: "500 Мбит/с",
+          features: ["Симметричный канал 450 Мбит/с", "Статический IP-адрес", "Приоритетная техподдержка 24/7", "Неограниченное количество подключений", "Резервный канал связи"]
+        },
+        {
+          title: "Бизнес Премиум",
+          price: "45 990 ₸",
+          speed: "1000 Мбит/с",
+          features: ["Симметричный канал 950 Мбит/с", "Пул статических IP-адресов (до 5)", "Личный менеджер", "Приоритетная техподдержка 24/7", "Неограниченное количество подключений", "SLA и гарантии восстановления"]
+        }
+      ],
+      gov: [
+        {
+          title: "Гос-Связь Базовый",
+          price: "12 990 ₸",
+          speed: "250 Мбит/с",
+          features: ["Симметричный канал 225 Мбит/с", "Статический IP-адрес", "Техподдержка в рабочее время", "До 20 подключений", "Соответствие требованиям ИБ"]
+        },
+        {
+          title: "Гос-Связь Стандарт",
+          price: "22 990 ₸",
+          speed: "500 Мбит/с",
+          features: ["Симметричный канал 450 Мбит/с", "Пул статических IP-адресов (до 3)", "Техподдержка 24/7", "Резервный канал связи", "Соответствие требованиям ИБ", "Защита от DDoS"]
+        },
+        {
+          title: "Гос-Связь Премиум",
+          price: "39 990 ₸",
+          speed: "1000 Мбит/с",
+          features: ["Симметричный канал 950 Мбит/с", "Пул статических IP-адресов (до 10)", "Личный менеджер", "Приоритетная техподдержка 24/7", "Неограниченное количество подключений", "Защита от DDoS", "SLA и гарантии восстановления"]
+        }
+      ]
+    };
+
+    function showPlans(type) {
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`.tab[onclick="showPlans('${type}')"]`).classList.add('active');
+
+      const container = document.getElementById('plan-container');
+      container.innerHTML = "";
+      const recommended = type === 'business' ? 1 : type === 'gov' ? 1 : 1;
+
+      plansData[type].forEach((plan, index) => {
+        const card = document.createElement("div");
+        card.className = "plan-card";
+        card.innerHTML = `
+          <div class="plan-title">${plan.title}</div>
+          <div class="plan-price">${plan.price}</div>
+          <div class="price-subtitle">в месяц</div>
+          <div class="plan-speed">Скорость: ${plan.speed}</div>
+          <ul class="features">${plan.features.map(f => `<li>${f}</li>`).join('')}</ul>
+          <button class="select-btn">Выбрать</button>
+        `;
+        if (index === recommended) {
+          card.classList.add('recommended');
+          const badge = document.createElement('div');
+          badge.className = 'recommended-badge';
+          badge.textContent = 'Рекомендуемый';
+          card.appendChild(badge);
+        }
+        container.appendChild(card);
+      });
+    }
+
+    function showPopup() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('popup').style.display = 'block';
+    }
+
+    function hidePopup() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    // Initialize with business plans by default
+    showPlans("business");
+  </script>
+</body>
+</html>

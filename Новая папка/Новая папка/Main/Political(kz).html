@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <title>Құпиялылық саясаты – MangyshNet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+    body { background-color: #fff; color: #333; line-height: 1.6; }
+    header { background-color: #fff; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); }
+    .header-left { display: flex; align-items: center; }
+    .logo { color: #354259; font-weight: bold; text-decoration: none; font-size: 18px; }
+    .nav-links { display: flex; list-style: none; right: 100px; margin: auto; }
+    .nav-links li { margin: 0 15px; }
+    .nav-links a { text-decoration: none; color: #354259; font-size: 14px; }
+    .header-right { display: flex; align-items: center; }
+    .language-selector { margin-right: 20px; color: #354259; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 60px; }
+    .connect-button { background-color: #354259; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    h1, h2 { color: #2c3e50; }
+    p { line-height: 1.6; margin-bottom: 16px; }
+    ul { margin-left: 20px; }
+    .footer { background-color: #0e1c3d; color: white; padding: 50px 30px 30px 30px; font-size: 14px; }
+    .footer-container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; margin-bottom: 40px; }
+    .footer-column { flex: 1 1 160px; min-width: 160px; }
+    .footer-column h4, .footer-column h3 { font-size: 16px; margin-bottom: 10px; }
+    .footer-column ul { list-style: none; padding: 0; }
+    .footer-column ul li { margin-bottom: 8px; color: #ccc; }
+    .footer-subscribe { background-color: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px; }
+    .footer-subscribe-form { margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .footer-subscribe-form input { padding: 10px; border-radius: 5px; border: none; width: 250px; }
+    .footer-subscribe-form button { padding: 10px 20px; background-color: #ffffff; color: #0e1c3d; border: none; border-radius: 5px; cursor: pointer; }
+    .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; font-size: 13px; color: #bbb; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 20px; }
+    .footer-links a { color: #bbb; margin-left: 20px; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header style="position: sticky; top: 0; background-color: white; z-index: 1000;">
+    <div class="header-left">
+      <a href="#" class="logo">MangyshNet</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/Main/Main(kz).html">Басты бет</a></li>
+      <li><a href="/Main/About us(kz).html">Жоба туралы</a></li>
+      <li><a href="/Main/tarrifs(kz).html">Қызметтер</a></li>
+      <li><a href="/Main/Helper(kz).html">Қолдау</a></li>
+      <li><a href="#" onclick="document.querySelector('.footer').scrollIntoView({ behavior: 'smooth' }); return false;">Байланыс</a></li>
+    </ul>
+    <div class="header-right">
+      <nav class="language-selector">
+        <ul>
+          <li style="display: inline;"><a href="/Main/Political.html" style="padding: 6px 14px; border-radius: 4px; background: #e0e0e0; color: #354259; margin-right: 8px; text-decoration: none; font-weight: bold;">RU</a></li>
+          <li style="display: inline;"><a href="/Main/Political(kz).html" style="padding: 6px 14px; border-radius: 4px; background: #354259; color: #fff; margin-right: 8px; text-decoration: none; font-weight: bold;">KZ</a></li>
+          <li style="display: inline;"><a href="/Main/Political(eng).html" style="padding: 6px 14px; border-radius: 4px; background: #e0e0e0; color: #354259; text-decoration: none; font-weight: bold;">EN</a></li>
+        </ul>
+      </nav>
+      <a href="/Main/tariffs.html" class="connect-button">Қосылу</a>
+    </div>
+    <div id="theme-toggle" style="margin-left: 20px; cursor: pointer; font-size: 24px;">
+      <span id="theme-icon">☀</span>
+    </div>
+  </header>
+
+  <div class="container scroll-animate">
+    <h1>Құпиялылық саясаты</h1>
+    <p>Осы құпиялылық саясаты <strong>MangyshNet</strong> компаниясының пайдаланушылардан сайт пен қызметтерді пайдалану кезінде алынатын ақпаратты қалай жинайтынын, қолданатынын және қорғайтынын анықтайды.</p>
+
+    <h2>1. Ақпаратты жинау</h2>
+    <p>Біз келесі ақпарат түрлерін жинауымыз мүмкін:</p>
+    <ul>
+      <li>Аты-жөні, байланыс деректері (телефон нөмірі, email және т.б.);</li>
+      <li>Қосылу ақпараты және құрылғының техникалық сипаттамалары;</li>
+      <li>Геолокация деректері (қамту картасын пайдаланғанда);</li>
+      <li>Техникалық қолдау қызметіне жүгіну тарихы.</li>
+    </ul>
+
+    <h2>2. Ақпаратты пайдалану</h2>
+    <p>Жиналған ақпарат тек келесі мақсаттарда қолданылады:</p>
+    <ul>
+      <li>Сапалы байланыс қызметтерін ұсыну;</li>
+      <li>Кері байланыс және техникалық қолдау көрсету;</li>
+      <li>Қызметті жақсарту және қамтуды кеңейту;</li>
+      <li>Пайдаланушылар сұраныстарын және статистиканы талдау.</li>
+    </ul>
+
+    <h2>3. Ақпаратты сақтау және қорғау</h2>
+    <p>Барлық деректер заманауи техникалық және ұйымдастырушылық қауіпсіздік шараларымен қорғалған. Ақпаратқа тек уәкілетті MangyshNet қызметкерлері ғана қол жеткізе алады.</p>
+
+    <h2>4. Үшінші тұлғаларға беру</h2>
+    <p>Біз сіздің жеке деректеріңізді үшінші тұлғаларға сіздің келісіміңізсіз бермейміз, Қазақстан Республикасының заңнамасында көзделген жағдайларды қоспағанда.</p>
+
+    <h2>5. Cookies және аналитика</h2>
+    <p>Біз сайттың жұмысын жақсарту және қатынау статистикасын алу үшін cookies қолдануымыз мүмкін. Сіз cookies-ті браузер баптауларында өшіре аласыз.</p>
+
+    <h2>6. Пайдаланушы құқықтары</h2>
+    <p>Сіз өзіңіздің жеке деректеріңізді жоюды немесе өзгертуді біздің қолдау қызметімізге хабарласып сұрай аласыз.</p>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>MangyshNet</h3>
+        <p style="font-size: 18px;">Маңғыстау облысына арналған цифрлық көпір. Біз адамдарды, бизнесті және мемлекетті тұрақты интернет арқылы байланыстырамыз.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Қызметтер</h4>
+        <ul>
+          <li>Үйге</li>
+          <li>Бизнеске</li>
+          <li>Мемлекеттік мекемелерге</li>
+          <li>Тарифтер</li>
+          <li>Қолжетімділікті тексеру</li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Компания</h4>
+        <ul>
+          <li>Жоба туралы</li>
+          <li>Жаңалықтар</li>
+          <li>Инвесторларға</li>
+          <li>Серіктестерге</li>
+          <li>Вакансиялар</li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Қолдау</h4>
+        <ul>
+          <li>Техникалық қолдау</li>
+          <li>Жиі қойылатын сұрақтар</li>
+          <li>Қалай қосылуға болады</li>
+          <li>Қызметтерді төлеу</li>
+          <li>Байланыс</li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Байланыс</h4>
+        <ul>
+          <li>📧 info@mangyshnet.kz</li>
+          <li>📞 +7 (776) 024-29-03</li>
+          <li>📍 Ақтау қ., 14 ш/а, 40 ғимарат</li>
+          <li>🕒 Техникалық қолдау 24/7</li>
+          <li>💳 Онлайн төлем</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-subscribe">
+      <h4>Жаңалықтарға жазылыңыз</h4>
+      <p>Біздің соңғы жаңалықтарымыз бен жаңартуларымыздан хабардар болыңыз</p>
+      <div class="footer-subscribe-form">
+        <input type="email" placeholder="Сіздің email" />
+        <button>Жазылу</button>
+      </div>
+    </div>
+    <div class="footer-bottom footer-links">
+      <p style="font-size: 13px;">© 2025 MangyshNet. Барлық құқықтар қорғалған.</p>
+      <div>
+        <a href="#">Құпиялылық саясаты</a>
+        <a href="/Main/term of use(kz).html">Пайдалану шарттары</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
